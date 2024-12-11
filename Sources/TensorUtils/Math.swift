@@ -7,9 +7,9 @@
 //
 
 import Foundation
+#if canImport(CoreML)
 import Accelerate
 import CoreML
-
 ///
 /// From M.I. Hollemans
 ///
@@ -169,3 +169,51 @@ public extension Math {
         }
     }
 }
+#else
+public struct Math {
+     public static func cumsum(_ arr: [Float]) -> [Float] {
+        print("***WARNING**** Math.cumsum: Using slow path")
+
+        guard !arr.isEmpty else {
+            return []
+        }
+        
+        var result = Array(repeating: Float(0), count: arr.count)
+        result[0] = arr[0]
+        
+        for i in 1..<arr.count {
+            result[i] = result[i-1] + arr[i]
+        }
+        
+        return result
+    }
+
+    public static func softmax(_ x: [Float]) -> [Float] {
+        print("***WARNING**** Math.softmax: Using slow path")
+
+        guard !x.isEmpty else {
+            return []
+        }
+        
+        var result = x
+        
+        // Find the maximum value
+        let max = result.max() ?? 0
+        
+        // Subtract the maximum from all elements
+        // This helps prevent overflow when we do exp()
+        result = result.map { $0 - max }
+        
+        // Exponentiate all elements
+        result = result.map { exp($0) }
+        
+        // Calculate the sum of all exponentials
+        let sum = result.reduce(0, +)
+        
+        // Normalize by dividing each element by the sum
+        result = result.map { $0 / sum }
+        
+        return result
+    }
+}
+#endif

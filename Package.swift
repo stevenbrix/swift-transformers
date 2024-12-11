@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.4.0"),
-        .package(url: "https://github.com/maiqingqiang/Jinja", from: "1.0.6")
+        .package(url: "https://github.com/maiqingqiang/Jinja", from: "1.0.6"),
     ],
     targets: [
         .executableTarget(
@@ -35,3 +35,8 @@ let package = Package(
         .testTarget(name: "PostProcessorTests", dependencies: ["Tokenizers", "Hub"])
     ]
 )
+
+#if os(Windows)
+package.dependencies += [.package(url: "https://github.com/OpenCombine/OpenCombine.git", from: "0.14.0")]
+package.targets.first(where: { $0.name == "Hub" })?.dependencies += [.product(name: "OpenCombine", package: "OpenCombine")]
+#endif

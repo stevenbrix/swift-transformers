@@ -4,7 +4,7 @@
 //
 //  Created by Pedro Cuenca on 7/5/23.
 //
-
+#if canImport(CoreML)
 import CoreML
 import Tokenizers
 import Generation
@@ -213,3 +213,4 @@ extension LanguageModel: TextGenerationModel {
 }
 
 extension String: Error {}
+#endif

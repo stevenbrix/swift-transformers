@@ -4,7 +4,7 @@
 //
 //  Created by Pedro Cuenca on 8/5/23.
 //
-
+#if canImport(CoreML)
 import CoreML
 import Tokenizers
 import Generation
@@ -40,3 +40,4 @@ public extension TextGenerationModel {
         try await self.generate(config: config, prompt: prompt, model: self.callAsFunction, tokenizer: self.tokenizer, callback: callback)
     }
 }
+#endif

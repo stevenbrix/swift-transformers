@@ -213,3 +213,15 @@ public class LanguageModelConfigurationFromHub {
         }
     }
 }
+
+#if !os(Darwin)
+extension URL {
+    func appending(path: String) -> URL {
+        return self.appendingPathComponent(path)
+    }
+
+    func appending(component: String) -> URL {
+        return self.appendingPathComponent(path)
+    }
+}
+#endif

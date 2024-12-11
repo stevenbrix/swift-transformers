@@ -6,7 +6,9 @@
 //
 
 import Tokenizers
+#if canImport(CoreML)
 import CoreML
+#endif
 import TensorUtils
 
 public enum GenerationMode {
@@ -21,11 +23,12 @@ public enum GenerationMode {
 public typealias InputTokens = [Int]
 public typealias GenerationOutput = [Int]
 
-/// A callable (a model, usually), that predicts the next token after a given sequence
-public typealias NextTokenModel = (InputTokens, GenerationConfig) -> any MLShapedArrayProtocol
-
 public typealias PredictionTokensCallback = (GenerationOutput) -> Void
 public typealias PredictionStringCallback = (String) -> Void
+
+#if canImport(CoreML)
+/// A callable (a model, usually), that predicts the next token after a given sequence
+public typealias NextTokenModel = (InputTokens, GenerationConfig) -> any MLShapedArrayProtocol
 
 // TODO: callbacks (for streaming)
 public protocol Generation {
@@ -107,3 +110,4 @@ public extension Generation {
         return logitsWarpers
     }
 }
+#endif

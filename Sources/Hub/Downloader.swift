@@ -7,7 +7,16 @@
 //
 
 import Foundation
+
+#if canImport(Combine)
 import Combine
+#else
+import OpenCombine
+#endif
+
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 class Downloader: NSObject, ObservableObject {
     private(set) var destination: URL
@@ -36,9 +45,11 @@ class Downloader: NSObject, ObservableObject {
 
         var config = URLSessionConfiguration.default
         if inBackground {
+            #if os(Darwin)
             config = URLSessionConfiguration.background(withIdentifier: sessionIdentifier)
-            config.isDiscretionary = false
             config.sessionSendsLaunchEvents = true
+            #endif
+            config.isDiscretionary = false
         }
 
         self.urlSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)

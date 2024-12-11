@@ -7,6 +7,7 @@
 //
 
 import Foundation
+#if canImport(CoreML)
 import CoreML
 
 public extension MLMultiArray {
@@ -198,3 +199,4 @@ extension MLMultiArray {
         return s + "]"
     }
 }
+#endif

@@ -7,22 +7,23 @@
 //
 
 import Foundation
+import Dispatch
 
 struct Utils {
     /// Time a block in ms
     static func time<T>(label: String, _ block: () -> T) -> T {
-        let startTime = CFAbsoluteTimeGetCurrent()
+        let startTime = DispatchTime.now()
         let result = block()
-        let diff = (CFAbsoluteTimeGetCurrent() - startTime) * 1_000
+        let diff = (DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1_000_000
         print("[\(label)] \(diff)ms")
         return result
     }
     
     /// Time a block in seconds and return (output, time)
     static func time<T>(_ block: () -> T) -> (T, Double) {
-        let startTime = CFAbsoluteTimeGetCurrent()
+        let startTime = DispatchTime.now()
         let result = block()
-        let diff = CFAbsoluteTimeGetCurrent() - startTime
+        let diff = Double(DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / Double(1_000_000_000)
         return (result, diff)
     }
     

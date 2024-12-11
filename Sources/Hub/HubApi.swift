@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public struct HubApi {
     var downloadBase: URL
@@ -261,8 +264,16 @@ public extension Hub {
     }
 }
 
+#if os(Windows)
+import WinSDK
+#endif
+
 public extension [String] {
     func matching(glob: String) -> [String] {
+        #if os(Windows)
+        filter { PathMatchSpecExA($0, glob, 0) == S_OK }
+        #else
         filter { fnmatch(glob, $0, 0) == 0 }
+        #endif
     }
 }
